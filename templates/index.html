@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>Jio Template</title>
+  <meta content="" name="descriptison">
+  <meta content="" name="keywords">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Jost:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="{{ url_for('static',filename='vendor/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">
+  <link href="{{ url_for('static',filename='vendor/icofont/icofont.min.css')}}" rel="stylesheet">
+  <link href="{{ url_for('static',filename='vendor/boxicons/css/boxicons.min.css')}}" rel="stylesheet">
+  <link href="{{ url_for('static',filename='vendor/remixicon/remixicon.css')}}" rel="stylesheet">
+  <link href="{{ url_for('static',filename='vendor/venobox/venobox.css')}}" rel="stylesheet">
+  <link href="{{ url_for('static',filename='vendor/owl.carousel/assets/owl.carousel.min.css')}}" rel="stylesheet">
+  <link href="{{ url_for('static',filename='vendor/aos/aos.css')}}" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="{{ url_for('static',filename='css/index.css' )}}" rel="stylesheet">
+</head>
+<body>
+
+    <!-- ======= Header ======= -->
+  <header id="header" class="fixed-top ">
+    <div class="container d-flex align-items-center">
+      <a href="{{ url_for('index')}}" class="logo mr-auto"><img src="{{url_for('static', filename='img/jio logo.png')}}" alt="" class="img-fluid"></a>
+    </div>
+  </header>
+  <!-- End Header -->
+
+  <!-- ======= Main Section ======= -->
+
+  <main id="main">
+      
+  <!-- ======= Filter Section ======= -->
+    <section id="filter" class="filter">
+        <div class="container" data-aos="fade-up">
+                <div class="row">
+                    <form class="form-inline new" action="">
+                        <label for="price-segment" class="mr-md-2">Price Segment:</label>
+                        <input type="text" name="price-segment" class="form-control mr-md-2" placeholder="Price segment" list="price-segment" required>
+                            <datalist id="price-segment">
+                                <option selected>Choose...</option>
+                                <option value="1000-2000">
+                                <option value="2000-5000">
+                            </datalist>
+                            <div class="validate"></div>
+                        <label for="Brand" class="mr-md-2">Brand:</label>
+                        <input type="text" name="Brand" class="form-control mr-md-2" placeholder="Brand" list="Brand" required>
+                            <datalist id="Brand">
+                                <option selected>Choose...</option>
+                                <option value="Samsung">
+                                <option value="Apple">
+                            </datalist>
+                            <div class="validate"></div>
+                        <div class="text-center"><button type="submit" class="btn btn-primary">Update Filter</button></div>
+                    </form>
+                </div>
+        </div>
+    </section>
+  <!-- ======= Remix and Add Product Section ======= -->
+
+    
+    <section id="remix" class="remix">
+        <div class="row">
+            <div class="column" data-aos="fade-up">
+                <div class="container" >
+                    <form action="" method="post" role="form" class="addproduct new">
+                        <div class="form-group col-lg-8 mb-2">
+                            <label for="Product" style="padding-right: 18px;">Product:</label>
+                            <input type="text" name="Product" placeholder="Name of the Product" list="Product" required>
+                            <datalist id="Product">
+                                <option selected>Choose...</option>
+                                <option value="Samsung S-10">
+                                <option value="iphone xr">
+                            </datalist>
+                            <div class="validate"></div>
+                        </div>
+                        <div class="form-group col-lg-8 mb-2">
+                        
+                            <div class="input-group-append">
+                                <label for="price-drop" style="padding:2px 4px 4px 0px;" >Price Drop:</label>
+                                <input type="number" name="Quantity" placeholder="Price drop in %" id="price-drop" required=>
+                                <span class="input-group-text" style="height: 30px;">%</span>
+                            </div>
+                            <div class="validate"></div>
+                        </div>
+                        <div class="form-group col-lg-8">
+                            <label for="remix type">Remix type:</label>
+                            <div class="input-group-prepend">
+                                <div class="input-group-text" style="height: 30px;">
+                                    <input name="remix type" id="quantity" value="quantity" type="radio" aria-label="Radio button for following text input" required>
+                                </div>
+                                <label class="form-control" for="quantity" style="height: 30px;"><strong>Quantity</strong></label>
+                            </div>
+                            <div class="input-group-prepend">
+                                <div class="input-group-text" style="height: 30px;">
+                                    <input name="remix type" id="revenue" value="revenue" type="radio" aria-label="Radio button for following text input" required>
+                                </div>
+                                <label class="form-control" for="revenue" style="height: 30px;"><strong>Revenue</strong></label>
+                            </div>
+                            <div class="input-group-prepend" >
+                                <div class="input-group-text" style="height: 30px;">
+                                    <input name="remix type" id="margins" value="margins" type="radio" aria-label="Radio button for following text input"  required>
+                                </div>
+                                <label class="form-control" for="margins" style="height: 30px;"><strong>Margins</strong></label>
+                            </div>
+                        </div>
+                    </form>       
+                </div>        
+            </div> 
+            <div class="column" data-aos="fade-up">
+                <div class="container">
+                    <div class="form new">
+                        <div class="section-title">
+                            <h5>Add/Edit a new Product</h5>
+                        </div>  
+                        <div class="row">
+                            <div class="column">
+                                <div class="col-lg-10 mt-5 mt-lg-0 d-flex align-items-stretch">
+                                    <table id ="product-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Product</th>
+                                                <th>Quantity</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody> 
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="column">
+                                <div class="col-lg-10 mt-5 mt-lg-0 d-flex align-items-stretch"></div>
+                                    <form action=""  role="form" class="addproduct">
+                                        <div class="form-group col-md-6">
+                                            <label for="select-product">Product:</label>
+                                            <input type="text" name="Product" placeholder="Name of the Product" id="Product" list="Product" required>
+                                                <datalist id="Product">
+                                                    <option selected>Choose...</option>
+                                                    <option value=""></option>
+                                                    <option value=""></option>
+                                                    <option value=""></option>
+                                                </datalist>
+                                            <div class="validate"></div>
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                        
+                                            <label for="Quantity">Quantity:</label>
+                                            <input type="number" name="Quantity" placeholder="Quantity" min=1 id="Quantity" required >
+                                            <div class="validate"></div>
+                                        </div>
+                                        <div class="text-center addbtn">
+                                            <button type="submit" onclick="productUpdate();">Add</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </section>
+
+  <!-- ======= Submit Section ======= -->
+
+    <section id="submit" class="submit" data-aos="fade-up">
+            <div class="text-center"><button type="submit">Submit</button></div>
+    </section>
+  </main>
+
+  <!-- ======= Output Section ======= -->
+  <section id="output" class="output" data-aos="fade-up">
+      <div class="row1">
+            <div class="column1 new">
+                <h5>Re-order Mix</h5>
+                <table>
+                    <tr>
+                    <th>Product</th>
+                    <th>Original Distribution</th>
+                    <th>Re-order Distribution</th>
+                    </tr>
+                    <tr>
+                    <td>Samsung S-10</td>
+                    <td>25</td>
+                    <td>20</td>
+                    </tr>
+                    <tr>
+                    <td>Xiami-X2</td>
+                    <td>50</td>
+                    <td>45</td>
+                    </tr>
+                    <tr>
+                    <td>Iphone XS</td>
+                    <td>10</td>
+                    <td>12</td>
+                    </tr>
+                </table>
+            </div>
+          
+
+            <div class="column1 new">
+                <h5>Measure</h5>
+                <table>
+                    <tr>
+                    <th>Product</th>
+                    <th>Weight</th>
+                    </tr>
+                    <tr>
+                    <td>Samsung S-10</td>
+                    <td>2.0</td>
+                    </tr>
+                    <tr>
+                    <td>Xiami-X2</td>
+                    <td>1.1</td>
+                    </tr>
+                    <tr>
+                    <td>Iphone XS</td>
+                    <td>-1.4</td>
+                    </tr>
+                </table>
+            </div>
+         
+            
+            <div class="column1 new">
+                <h5>Stacked Bar Graph</h5>
+            </div>
+      </div>
+  </section>
+
+
+
+    <!-- End main -->
+    
+  <!-- ======= Footer ======= -->
+  <footer id="footer">
+    <div class="container footer-bottom clearfix">
+      <div class="copyright">
+         <strong><span>Jio</span></strong>
+      </div>
+    </div>
+  </footer><!-- End Footer -->
+
+  <a href="#" class="back-to-top"><i class="ri-arrow-up-line"></i></a>
+
+    
+  <!-- Vendor JS Files -->
+  <script src="{{ url_for('static',filename='vendor/jquery/jquery.min.js')}}"></script>
+  <script src="{{ url_for('static',filename='vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+  <script src="{{ url_for('static',filename='vendor/jquery.easing/jquery.easing.min.js')}}"></script>
+  <script src="{{ url_for('static',filename='vendor/php-email-form/validate.js')}}"></script>
+  <script src="{{ url_for('static',filename='vendor/waypoints/jquery.waypoints.min.js' )}}"></script>
+  <script src="{{ url_for('static',filename='vendor/isotope-layout/isotope.pkgd.min.js')}}"></script>
+  <script src="{{ url_for('static',filename='vendor/venobox/venobox.min.js')}}"></script>
+  <script src="{{ url_for('static',filename='vendor/owl.carousel/owl.carousel.min.js')}}"></script>
+  <script src="{{ url_for('static',filename='vendor/aos/aos.js')}}"></script>
+
+  <!-- Template Main JS File -->
+  <script type="text/javascript" src="{{ url_for('static',filename='js/index.js' )}}"></script>
+</body>
+</html>
