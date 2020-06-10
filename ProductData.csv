@@ -1,0 +1,45 @@
+Product,Brand,Price Segment,priceSegmentList,priceValueList
+Iphone 11,Apple,ps7,ps1,0-10000
+Iphone SE,Apple,ps5,ps2,10000-20000
+Iphone Xr,Apple,ps5,ps3,20000-30000
+Iphone Xs,Apple,ps7,ps4,30000-40000
+Iphone 6,Apple,ps1,ps5,40000-50000
+Iphone 7 ,Apple,ps2,ps6,50000-60000
+Samsung Galaxy S9,Samsung,ps3,ps7,60000-70000
+Samsung Galaxy A50,Samsung,ps2,,
+Samsung J6,Samsung,ps1,,
+Samsung Galaxy J7 Nxt,Samsung,ps1,,
+Samsung Galaxy M31,Samsung,ps2,,
+Samsung Galaxy S9+,Samsung,ps4,,
+Samsung Galaxy J8,Samsung,ps1,,
+Vivo S1 Pro,Vivo,ps2,,
+Vivo V19,Vivo,ps3,,
+Vivo Z1 pro,Vivo,ps2,,
+Vivo S1 ,Vivo,ps2,,
+Vivo  Y11,Vivo,ps1,,
+Vivo Y19,Vivo,ps2,,
+Nexus 5X,Nexus,ps3,,
+Nexus 5,Nexus,ps2,,
+Nexus 6P,Nexus,ps5,,
+Nexus 4,Nexus,ps3,,
+Nokia 9,Nokia,ps6,,
+Nokia 6.2,Nokia,ps2,,
+Nokia 6.1 plus,Nokia,ps2,,
+Nokia 5.1 Plus,Nokia,ps2,,
+Nokia 8.1,Nokia,ps2,,
+Nokia 7.2,Nokia,ps3,,
+One plus 5,One Plus,ps2,,
+One plus 6,One Plus,ps4,,
+One plus 6T,One Plus,ps3,,
+One plus 7,One Plus,ps3,,
+One plus 7T,One Plus,ps4,,
+One plus 7 pro,One Plus,ps4,,
+Redmi Note 9 Pro Max,Xiami,ps2,,
+Redmi Note 9 Pro,Xiami,ps2,,
+Poco X2,Xiami,ps2,,
+Poco F1,Xiami,ps2,,
+Redmi 5,Xiami,ps1,,
+Redmi 8A dual,Xiami,ps1,,
+Redmi 8,Xiami,ps1,,
+Redmi 6 ,Xiami,ps1,,
+Redmi 6 Pro,Xiami,ps1,,
