@@ -66,9 +66,12 @@ def add():
     
     return redirect(url_for('index')) 
 
-@app.route('/filter', methods=['GET','POST']) 
-def filter(): 
+@app.route('/filtervalues', methods=['GET','POST']) 
+def filtervalues():
+    print(request.method)
+    print(request)
     if request.method == "POST":
+        print(request.method)
         brand = request.form['brand']
         print(brand)
         priceSegment= request.form['price-segment']
