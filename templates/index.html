@@ -68,7 +68,7 @@
                             {% endfor %}
                         {% endif %}
                     {% endwith %} -->
-                    <form action="{{url_for('filter')}}" , method="POST" class="form-inline new" id='filter'> 
+                    <form action="{{url_for('filtervalues')}}" , method="POST" class="form-inline new" id='filtervalues'> 
                         <label for="price-segment" class="mr-md-2">Price Segment:</label>
                         <input type="text" name="price-segment" class="form-control mr-md-2" placeholder="Price segment" list="price-segment" >
                             <datalist id="price-segment">
@@ -88,7 +88,7 @@
                  <script>
                     // 1/6/2020
                     window.addEventListener("DOMContentLoaded",e=>{
-                        let filterForm = document.querySelector("#filter") 
+                        let filterForm = document.querySelector("#filtervalues") 
                         filterForm.addEventListener("submit",(event)=>{
                             event.preventDefault()
                             const brand = filterForm["brand"] 
@@ -104,7 +104,7 @@
                                     "Content-type" : "application/json"
                                 }
                             }
-                            fetch("/filter")
+                            fetch("/filtervalues")
                             .then(resp=>{
                                 console.log(resp)
                                 return resp.json()
