@@ -31,6 +31,20 @@
     <div class="container d-flex align-items-center">
       <a href="{{ url_for('index')}}" class="logo mr-auto"><img src="{{url_for('static', filename='img/jio logo.png')}}" alt="" class="img-fluid"></a>
     </div>
+    <div>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                    <span>{{ message }}</span>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    </div>
   </header>
   <!-- End Header -->
 
@@ -40,56 +54,164 @@
       
   <!-- ======= Filter Section ======= -->
     <section id="filter" class="filter">
-        <div class="container" data-aos="fade-up">
-                <div class="row">
-                    <form class="form-inline new" action="">
+        <div class="container" data-aos="fade-up" style="margin-top:50px">
+                <div class="row" style="margin-right: 12px;" >
+                    <!-- {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                            {% for category, message in messages %}
+                                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                                    <span>{{ message }}</span>
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %} -->
+                    <form action="{{url_for('filter')}}" , method="POST" class="form-inline new" id='filter'> 
                         <label for="price-segment" class="mr-md-2">Price Segment:</label>
-                        <input type="text" name="price-segment" class="form-control mr-md-2" placeholder="Price segment" list="price-segment" required>
+                        <input type="text" name="price-segment" class="form-control mr-md-2" placeholder="Price segment" list="price-segment" >
                             <datalist id="price-segment">
-                                <option selected>Choose...</option>
-                                <option value="1000-2000">
-                                <option value="2000-5000">
+                            
+                                
                             </datalist>
-                            <div class="validate"></div>
+                        
                         <label for="Brand" class="mr-md-2">Brand:</label>
-                        <input type="text" name="Brand" class="form-control mr-md-2" placeholder="Brand" list="Brand" required>
-                            <datalist id="Brand">
-                                <option selected>Choose...</option>
-                                <option value="Samsung">
-                                <option value="Apple">
+                        <input type="text" name="brand" class="form-control mr-md-2" placeholder="Brand" list="brand" >
+                            <datalist id="brand">
+                                
                             </datalist>
-                            <div class="validate"></div>
+                            
                         <div class="text-center"><button type="submit" class="btn btn-primary">Update Filter</button></div>
                     </form>
                 </div>
+                 <script>
+                    // 1/6/2020
+                    window.addEventListener("DOMContentLoaded",e=>{
+                        let filterForm = document.querySelector("#filter") 
+                        filterForm.addEventListener("submit",(event)=>{
+                            event.preventDefault()
+                            const brand = filterForm["brand"] 
+                            const ps = filterForm["price-segment"]
+                            console.log(brand, ps)
+                            let options = {
+                                method : "POST",
+                                body: JSON.stringify({
+                                    "brand": brand,
+                                    "priceSegment": ps
+                                }),
+                                headers: {
+                                    "Content-type" : "application/json"
+                                }
+                            }
+                            fetch("/filter")
+                            .then(resp=>{
+                                console.log(resp)
+                                return resp.json()
+                            })
+                            .then(data=>{
+                                data = JSON.parse(data)
+                                console.log(typeof(data))
+                                let html4 = ""
+                                data.forEach(item=>{
+                                    let itemString  = `<option value="${item}">${item}</option>`
+                                    html4 += itemString
+                                })
+
+                                console.log(html4)
+                               // document.querySelector("#productAdd").innerHTML = html
+                                //document.querySelector("#products").innerHTML = html
+                                document.querySelector("#products").innerHTML = html4
+                                document.querySelector("#productAdd").innerHTML = html4 
+                            })
+                        })
+                    
+                    })
+                    
+                </script> 
+                <script type="text/javascript">
+                    window.addEventListener("DOMContentLoaded",event=>{
+                        fetch("/sender")
+                        .then(res=>{
+                            return res.json()
+                        })
+                        .then(data=>{
+                            // console.log(data)
+                            document.querySelector("#price-segment")
+                            //console.log(data[0].brands)
+                            let brands = []
+                            data[0].brands.forEach(item=>{
+                                //console.log(Object.keys(item)[0])
+                                brands.push(Object.keys(item)[0])
+                            })
+                            
+                            let html = ""
+                            brands.forEach(brand=>{
+                                html+=`<option value="${brand}">${brand}</option>`
+                            })
+                            
+                            document.querySelector("#brand").innerHTML = html
+                            
+                            
+                            // now price segment population
+                            // console.log(data[0].segments)
+                            let html2= ""
+                            data[0].segments.forEach(segments=>{
+                                //console.log(segments)
+                                Object.keys(segments).forEach(key=>{
+                                    let item = `<option value="${key}">${segments[key]}</option>`
+                                    html2+= item
+                                }) 
+                            })
+                            
+                            document.querySelector("#price-segment").innerHTML = html2
+                    
+                            //products default list population
+                            
+                            // data[0].brands.forEach(brandsfunc);
+
+                            // function brandsfunc(item) {
+                            // document.querySelector("#brand").innerHTML +='<option value="'+item+'">'+ item+ '</option>' 
+                            // }
+                            
+                            data[0].products.forEach(myFunction);
+
+                            function myFunction(item) {
+                            document.querySelector("#productAdd").innerHTML +='<option value="'+item+'">'+ item+ '</option>'
+                            document.querySelector("#products").innerHTML += '<option value="'+item+'">' +item +'</option>'         
+                            }
+                        })
+                    })
+                </script>
         </div>
     </section>
   <!-- ======= Remix and Add Product Section ======= -->
 
     
     <section id="remix" class="remix">
-        <div class="row">
-            <div class="column" data-aos="fade-up">
-                <div class="container" >
-                    <form action="" method="post" role="form" class="addproduct new">
+        <div class="row container">
+            <div class="new" style="margin-left: 102px; margin-right: -140px;">
+                <div class="column " data-aos="fade-up">
+
+                    <form action="{{ url_for('submit') }}" method="POST"  role="form" class="addproduct ">
+                    
                         <div class="form-group col-lg-8 mb-2">
                             <label for="Product" style="padding-right: 18px;">Product:</label>
-                            <input type="text" name="Product" placeholder="Name of the Product" list="Product" required>
-                            <datalist id="Product">
-                                <option selected>Choose...</option>
-                                <option value="Samsung S-10">
-                                <option value="iphone xr">
+                            <input type="text" name="products" placeholder="Name of the Product" list="products" required>
+                            <datalist id="products">
+                            
+                            
                             </datalist>
-                            <div class="validate"></div>
+                        
                         </div>
                         <div class="form-group col-lg-8 mb-2">
                         
                             <div class="input-group-append">
                                 <label for="price-drop" style="padding:2px 4px 4px 0px;" >Price Drop:</label>
-                                <input type="number" name="Quantity" placeholder="Price drop in %" id="price-drop" required=>
+                                <input type="number" name="price-drop" placeholder="Price drop in %" id="price-drop" required=>
                                 <span class="input-group-text" style="height: 30px;">%</span>
                             </div>
-                            <div class="validate"></div>
+                            
                         </div>
                         <div class="form-group col-lg-8">
                             <label for="remix type">Remix type:</label>
@@ -112,71 +234,79 @@
                                 <label class="form-control" for="margins" style="height: 30px;"><strong>Margins</strong></label>
                             </div>
                         </div>
+                                <div class="text-right"><button type="submit" id="submitbtn">Submit</button></div>
+                        
                     </form>       
-                </div>        
-            </div> 
-            <div class="column" data-aos="fade-up">
-                <div class="container">
-                    <div class="form new">
-                        <div class="section-title">
-                            <h5>Add/Edit a new Product</h5>
-                        </div>  
-                        <div class="row">
-                            <div class="column">
-                                <div class="col-lg-10 mt-5 mt-lg-0 d-flex align-items-stretch">
-                                    <table id ="product-table">
-                                        <thead>
-                                            <tr>
-                                                <th>Product</th>
-                                                <th>Quantity</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody> 
+                    <script>
+                        
+                        window.addEventListener("load",event=>{
+                        document.getElementById("output").style.display = "none";
+                        
+                        document.getElementById("submitbtn").onclick = function() { 
+                            document.getElementById("output").style.display = "block"; 
+                        } 
+                        })                  
+                    </script>
 
-                                        </tbody>
-                                    </table>
-                                </div>
+                </div>
+                <div class="column" data-aos="fade-up">
+                    <div class="section-title">
+                        <h5>Add/Edit a new Product</h5>
+                    </div>  
+                    <div class="row">
+                        <div class="column">
+                            <div class="col-lg-10 mt-5 mt-lg-0 d-flex align-items-stretch">
+                                <table id ="product-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Product</th>
+                                            <th>Quantity</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody> 
+                                        {% for i in product_list %}
+                                        <tr>
+                                            <td>{{i.prod}}</td>
+                                            <td>{{i.quant}}</td>
+                                        </tr>
+                                        {% endfor %}
+
+                                    </tbody>
+                                </table>
                             </div>
-                            <div class="column">
-                                <div class="col-lg-10 mt-5 mt-lg-0 d-flex align-items-stretch"></div>
-                                    <form action=""  role="form" class="addproduct">
-                                        <div class="form-group col-md-6">
-                                            <label for="select-product">Product:</label>
-                                            <input type="text" name="Product" placeholder="Name of the Product" id="Product" list="Product" required>
-                                                <datalist id="Product">
-                                                    <option selected>Choose...</option>
-                                                    <option value=""></option>
-                                                    <option value=""></option>
-                                                    <option value=""></option>
-                                                </datalist>
-                                            <div class="validate"></div>
-                                        </div>
-                                        <div class="form-group col-md-6">
-                                        
-                                            <label for="Quantity">Quantity:</label>
-                                            <input type="number" name="Quantity" placeholder="Quantity" min=1 id="Quantity" required >
-                                            <div class="validate"></div>
-                                        </div>
-                                        <div class="text-center addbtn">
-                                            <button type="submit" onclick="productUpdate();">Add</button>
-                                        </div>
-                                    </form>
-                                </div>
+                        </div>
+                        <div class="column">
+                            <div class="col-lg-10 mt-5 mt-lg-0 d-flex align-items-stretch"></div>
+                                <form action="{{ url_for('add') }}" method="POST"  role="form" class="addproduct">
+                                    <div class="form-group col-md-6">
+                                        <label for="productAdd">Product:</label>
+                                        <input type="text" name="productAdd" placeholder="Name of the Product"  list="productAdd" required>
+                                            <datalist id="productAdd">
+                                            
+                                            </datalist>
+                                            
+                                        <div class="validate"></div>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                    
+                                        <label for="Quantity">Quantity:</label>
+                                        <input type="number" name="Quantity" placeholder="Quantity" min=1 id="quantity" required >
+                                        <div class="validate"></div>
+                                    </div>
+                                    <div class="text-center addbtn">
+                                        <button type="submit" id="add" >Add</button>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>
-                </div>
-            </form>
-
+                </div>   
+            </div>
         </div>
     </section>
+    
+     
 
-  <!-- ======= Submit Section ======= -->
-
-    <section id="submit" class="submit" data-aos="fade-up">
-            <div class="text-center"><button type="submit">Submit</button></div>
-    </section>
-  </main>
 
   <!-- ======= Output Section ======= -->
   <section id="output" class="output" data-aos="fade-up">
@@ -189,21 +319,16 @@
                     <th>Original Distribution</th>
                     <th>Re-order Distribution</th>
                     </tr>
-                    <tr>
-                    <td>Samsung S-10</td>
-                    <td>25</td>
-                    <td>20</td>
-                    </tr>
-                    <tr>
-                    <td>Xiami-X2</td>
-                    <td>50</td>
-                    <td>45</td>
-                    </tr>
-                    <tr>
-                    <td>Iphone XS</td>
-                    <td>10</td>
-                    <td>12</td>
-                    </tr>
+                    
+                    {% for i in product_list %}
+                        <tr>
+                            <td>{{i.prod}}</td>
+                            <td>{{i.quant}}</td>
+                            <td></td>
+
+                        </tr>
+                    {% endfor %}
+                    
                 </table>
             </div>
           
@@ -215,18 +340,13 @@
                     <th>Product</th>
                     <th>Weight</th>
                     </tr>
-                    <tr>
-                    <td>Samsung S-10</td>
-                    <td>2.0</td>
-                    </tr>
-                    <tr>
-                    <td>Xiami-X2</td>
-                    <td>1.1</td>
-                    </tr>
-                    <tr>
-                    <td>Iphone XS</td>
-                    <td>-1.4</td>
-                    </tr>
+                    {% for i in measure_list %}
+                        <tr>
+                               <td>{{i.prod}}</td>
+                               <td>{{i.meas}}</td>
+                        </tr>
+                    {% endfor %}
+                    
                 </table>
             </div>
          
@@ -236,6 +356,7 @@
             </div>
       </div>
   </section>
+</main>
 
 
 
@@ -265,6 +386,9 @@
   <script src="{{ url_for('static',filename='vendor/aos/aos.js')}}"></script>
 
   <!-- Template Main JS File -->
-  <script type="text/javascript" src="{{ url_for('static',filename='js/index.js' )}}"></script>
+  <script type="text/javascript" src="{{ url_for('static',filename='js/index.js')}}"></script>
 </body>
 </html>
+
+
+
