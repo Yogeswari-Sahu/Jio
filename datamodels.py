@@ -7,7 +7,7 @@ df = pd.read_csv('ProductData.csv')
 dfprod=[]
 reorder=[]
 randomlist=[]
-quant=[12,34,56,32,11]
+# quant=[12,34,56,32,11]
 
 def filterprod(brand,priceSegment):
     if(brand and priceSegment):
@@ -59,13 +59,8 @@ def ps():
     print(col)
     return col
 
-
 def getmeasure(self_context,cross_context):
-    # for i in range(len(cross_context)):
-        # randomlist.append(n)
-        # for i in cross_context:
-        #     print(i)
-    print(cross_context)
+    randomlist = []
     for i in range(len(cross_context)):
         n = round(random.uniform(0.5,1.5),2)
         p=cross_context[i]['prod']
@@ -73,23 +68,35 @@ def getmeasure(self_context,cross_context):
             'prod':p,
             'meas':n
         })
-    print(randomlist)
     return randomlist
     
-
+# def getreorder(self_context,cross_context):
+#     for i in range(len(getmeasure(self_context,cross_context))):
+#         r=randomlist[i]['meas']
+#         # print(r)
+#         q=cross_context[i]['quant']
+#         # print(q)
+#         reo=round(q*r)
+#         p=cross_context[i]['prod']
+#         reorder.append({
+#             'prod':p,
+#             'quant':q
+#             'reorder':reo
+#         })
+#     print(reorder)
+#     return reorder
+    
 def getreorder(self_context,cross_context):
-    for i in range(len(getmeasure(self_context,cross_context))):
+    randomlist = getmeasure(self_context,cross_context)
+    reorder = []
+    for i in range(len(randomlist)):
         r=randomlist[i]['meas']
-        print(r)
-        q=cross_context[i]['quant']
-        print(q)
-
-        # reo=round(q*r)
+        q=float(cross_context[i]['quant'])
+        reo=round(q*r)
         p=cross_context[i]['prod']
         reorder.append({
             'prod':p,
-            'quant':q
-            # 'reorder':reo
+            'quant':q,
+            'reorder':reo
         })
-    print(reorder)
     return reorder

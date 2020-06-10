@@ -90,9 +90,10 @@
                     window.addEventListener("DOMContentLoaded",e=>{
                         let filterForm = document.querySelector("#filtervalues") 
                         filterForm.addEventListener("submit",(event)=>{
+                            console.log('req is sent')
                             event.preventDefault()
-                            const brand = filterForm["brand"] 
-                            const ps = filterForm["price-segment"]
+                            const brand = filterForm["brand"].value
+                            const ps = filterForm["price-segment"].value
                             console.log(brand, ps)
                             let options = {
                                 method : "POST",
@@ -104,13 +105,15 @@
                                     "Content-type" : "application/json"
                                 }
                             }
-                            fetch("/filtervalues")
+                            fetch("/filtervalues",options)
                             .then(resp=>{
-                                console.log(resp)
+                                console.log('helllllllloooooooo')
+
+                                // console.log(resp)
                                 return resp.json()
                             })
                             .then(data=>{
-                                data = JSON.parse(data)
+                                // data = JSON.parse(data)
                                 console.log(typeof(data))
                                 let html4 = ""
                                 data.forEach(item=>{
@@ -123,7 +126,9 @@
                                 //document.querySelector("#products").innerHTML = html
                                 document.querySelector("#products").innerHTML = html4
                                 document.querySelector("#productAdd").innerHTML = html4 
+                                filterForm.reset()
                             })
+
                         })
                     
                     })
@@ -193,7 +198,7 @@
             <div class="new" style="margin-left: 102px; margin-right: -140px;">
                 <div class="column " data-aos="fade-up">
 
-                    <form action="{{ url_for('submit') }}" method="POST"  role="form" class="addproduct ">
+                    <form action="{{ url_for('submit') }}" method="POST"  role="form" class="addproduct " id="submitform">
                     
                         <div class="form-group col-lg-8 mb-2">
                             <label for="Product" style="padding-right: 18px;">Product:</label>
@@ -214,22 +219,22 @@
                             
                         </div>
                         <div class="form-group col-lg-8">
-                            <label for="remix type">Remix type:</label>
+                            <label for="remix-type">Remix type:</label>
                             <div class="input-group-prepend">
                                 <div class="input-group-text" style="height: 30px;">
-                                    <input name="remix type" id="quantity" value="quantity" type="radio" aria-label="Radio button for following text input" required>
+                                    <input name="remix-type" id="quantity" value="quantity" type="radio" aria-label="Radio button for following text input" required>
                                 </div>
                                 <label class="form-control" for="quantity" style="height: 30px;"><strong>Quantity</strong></label>
                             </div>
                             <div class="input-group-prepend">
                                 <div class="input-group-text" style="height: 30px;">
-                                    <input name="remix type" id="revenue" value="revenue" type="radio" aria-label="Radio button for following text input" required>
+                                    <input name="remix-type" id="revenue" value="revenue" type="radio" aria-label="Radio button for following text input" required>
                                 </div>
                                 <label class="form-control" for="revenue" style="height: 30px;"><strong>Revenue</strong></label>
                             </div>
                             <div class="input-group-prepend" >
                                 <div class="input-group-text" style="height: 30px;">
-                                    <input name="remix type" id="margins" value="margins" type="radio" aria-label="Radio button for following text input"  required>
+                                    <input name="remix-type" id="margins" value="margins" type="radio" aria-label="Radio button for following text input"  required>
                                 </div>
                                 <label class="form-control" for="margins" style="height: 30px;"><strong>Margins</strong></label>
                             </div>
@@ -264,27 +269,26 @@
                                         </tr>
                                     </thead>
                                     <tbody> 
-                                        {% for i in product_list %}
+                                        
+                                        <!-- {% for i in product_list %}
                                         <tr>
                                             <td>{{i.prod}}</td>
                                             <td>{{i.quant}}</td>
                                         </tr>
-                                        {% endfor %}
-
+                                        {% endfor %} -->
                                     </tbody>
                                 </table>
                             </div>
                         </div>
                         <div class="column">
                             <div class="col-lg-10 mt-5 mt-lg-0 d-flex align-items-stretch"></div>
-                                <form action="{{ url_for('add') }}" method="POST"  role="form" class="addproduct">
+                                <form action="" method="POST"  role="form" class="addproduct" id="addProduct">
                                     <div class="form-group col-md-6">
                                         <label for="productAdd">Product:</label>
                                         <input type="text" name="productAdd" placeholder="Name of the Product"  list="productAdd" required>
                                             <datalist id="productAdd">
                                             
-                                            </datalist>
-                                            
+                                            </datalist>                                         
                                         <div class="validate"></div>
                                     </div>
                                     <div class="form-group col-md-6">
@@ -297,6 +301,72 @@
                                         <button type="submit" id="add" >Add</button>
                                     </div>
                                 </form>
+                                <script>
+                                        var prodQuant = []
+                                        window.addEventListener("DOMContentLoaded",event=>{
+                                                
+                                                let addProduct = document.querySelector("#addProduct") 
+                                                addProduct.addEventListener("submit",e=>{
+                                                        e.preventDefault()
+                                                        let product=addProduct["productAdd"].value
+                                                        let quantity = addProduct["quantity"].value
+                                                        console.log("product:",product)
+                                                        console.log("quantity:", quantity)
+                                                        let html = 
+                                                        `<tr>
+                                                                <td>${product}</td>
+                                                                <td>${quantity}</td>
+                                                        </tr>`
+                                                        document.querySelector("#product-table tbody").insertAdjacentHTML("beforeend",html)
+                                                        addProduct.reset() 
+                                                        prodQuant.push({
+                                                                "prod": product,
+                                                                "quant": quantity
+                                                        })
+                                                        
+                                                })
+                                                let submitform = document.querySelector("#submitform") 
+                                                submitform.addEventListener("submit",e=>{
+                                                        e.preventDefault()
+                                                        let product_choose= submitform["products"].value
+                                                        let price_drop = submitform["price-drop"].value
+                                                        let remix_type= submitform["remix-type"].value
+                                                        console.log("product:",product_choose)
+                                                        console.log("priceDrop:", price_drop)
+                                                        console.log("remix:", remix_type)
+                                                        let data = {
+                                                                "prodQuant" : prodQuant,
+                                                                "product": product_choose,
+                                                                "priceDrop": price_drop,
+                                                                "remix": remix_type
+                                                        }
+
+                                                        let options = {
+                                                                method : "POST",
+                                                                body: JSON.stringify(data),
+                                                                headers: {
+                                                                        "Content-type" : "application/json"
+                                                                },
+                                                        }
+                                                        fetch("/submit",options)
+                                                        .then(resp=>{
+                                                                console.log(resp)
+                                                                return resp.json()
+                                                        })
+                                                        .then(res=>{
+                                                                console.log(res)
+                                                        })
+
+                                                        // let html = 
+                                                        // `<tr>
+                                                        //         <td>${}</td>
+                                                        //         <td>${quantity}</td>
+                                                        // </tr>`
+                                                        // document.querySelector("#product-table tbody").insertAdjacentHTML("beforeend",html)
+                                                        
+                                                })
+                                        })                                               
+                                </script>
                             </div>
                         </div>
                     </div>
@@ -389,6 +459,3 @@
   <script type="text/javascript" src="{{ url_for('static',filename='js/index.js')}}"></script>
 </body>
 </html>
-
-
-

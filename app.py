@@ -7,9 +7,9 @@ app= Flask(__name__)
 app.secret_key = 'super secret key'
 app.config['SESSION_TYPE'] = 'filesystem'
 # filterlist=[]
-
-prodQuant= []
 # prod()
+prodQuant=[]
+
 
 brandlist=[{"Apple": "Apple"},
         {"One Plus" : "One Plus"},
@@ -54,43 +54,35 @@ def login():
 def index():
     return render_template('index.html',product_list=prodQuant)
 
-@app.route('/add', methods=['POST']) 
-def add(): 
-    prod = request.form['productAdd']
-    quant=request.form['Quantity']
+# @app.route('/add', methods=['POST']) 
+# def add(): 
+#     prod = request.form['productAdd']
+#     quant=request.form['Quantity']
 
-    prodQuant.append({
-        'prod':prod,
-        'quant':quant 
-    })
-    
-    return redirect(url_for('index')) 
+#     prodQuant.append({
+#         'prod':prod,
+#         'quant':quant 
+#     })
+#     print(prodQuant)
+#     return redirect(url_for('index')) 
 
 @app.route('/filtervalues', methods=['GET','POST']) 
 def filtervalues():
-    print(request.method)
-    print(request)
     if request.method == "POST":
-        print(request.method)
-        brand = request.form['brand']
-        print(brand)
-        priceSegment= request.form['price-segment']
-        print(priceSegment)
+        print(request.get_json())
+        brand = request.get_json()['brand']
+        # print(brand)
+        priceSegment= request.get_json()['priceSegment']
+        # print(priceSegment)
         # filterlist.append({
         #     'brand' : brand,
         #     'ps' :priceSegment
         # }) 
-        # print(filterlist) 
+        # print(filterlist)
         result = filterprod(brand, priceSegment)
         print(result)
-        datafinal=[]
-        datafinal.append ({
-           "result": result
-        })
-        datafinal=list(datafinal)
-        print(datafinal)
         flash("Filtered", "success")
-        return json.dumps(datafinal)
+        return json.dumps(result)
    # return redirect(url_for('index')) 
 
 # @app.route('/product', methods=['GET', 'POST'])
@@ -110,13 +102,17 @@ def sender():
 
 @app.route('/submit', methods=['POST']) 
 def submit(): 
-    
-    productchoose=request.form['products']
-    pricedrop=request.form['price-drop']
-    remix=request.form['remix type']
-        
+    getjson=request.get_json()
+    print(getjson)
+    productchoose=getjson['product']
+    pricedrop=getjson['priceDrop']
+    remix=getjson['remix']
+    prodQuant=getjson['prodQuant']
+    print(prodQuant)
     randomlist=getmeasure(productchoose,prodQuant)
+    print(randomlist)
     reorderlist=getreorder(productchoose,prodQuant)
+    print(reorderlist)
     submitdata.append({
         'ProdQuant':prodQuant,
         'Product_Chosen': productchoose,
@@ -126,7 +122,6 @@ def submit():
     print(submitdata)
     flash('Submitted successfully','success')
     return render_template('index.html',measure_list=randomlist,reorder_list=reorderlist)
-
 
 if __name__ == "__main__":
     app.run(debug=True)
