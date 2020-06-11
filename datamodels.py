@@ -1,9 +1,32 @@
-# from flask import Flask,render_template, url_for, request, redirect, jsonify, json
+# from flask import Flask,render_template, url_for, request, redirect, jsonify, json, flash,current_app
 import pandas as pd
 import random
 
+FILENAME='ProductData.csv'
 
-df = pd.read_csv('ProductData.csv')
+# with app.app_context():
+#     # within this block, current_app points to app.
+#     print current_app.name
+
+# df=()
+# def fileavailable():
+#     try:
+#         file = pd.read_csv(FILENAME)
+#         return True
+#             # if df:
+#             #     print('sucsess')
+#             # else:
+#                 # print('get one more')
+#     except:
+#         return False
+        
+
+df = pd.read_csv(FILENAME)
+
+# except Exception as e:
+#     print('heelllllooooo exc')
+#     flash('File not found','error')
+
 dfprod=[]
 reorder=[]
 randomlist=[]
@@ -33,7 +56,6 @@ def filterprod(brand,priceSegment):
         dffinal=list(dffinal)
         print(dffinal)
         return dffinal
-    return 'line36'
 
 def prod():
     dffinal=df['Product']
@@ -69,22 +91,6 @@ def getmeasure(self_context,cross_context):
             'meas':n
         })
     return randomlist
-    
-# def getreorder(self_context,cross_context):
-#     for i in range(len(getmeasure(self_context,cross_context))):
-#         r=randomlist[i]['meas']
-#         # print(r)
-#         q=cross_context[i]['quant']
-#         # print(q)
-#         reo=round(q*r)
-#         p=cross_context[i]['prod']
-#         reorder.append({
-#             'prod':p,
-#             'quant':q
-#             'reorder':reo
-#         })
-#     print(reorder)
-#     return reorder
     
 def getreorder(self_context,cross_context):
     randomlist = getmeasure(self_context,cross_context)

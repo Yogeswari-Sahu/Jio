@@ -1,9 +1,10 @@
 from flask import Flask,render_template, url_for, request, redirect, jsonify, json,flash
+from flask_cors import CORS
 import pandas as pd
 from datamodels import filterprod,prod,getmeasure,getreorder
 
 app= Flask(__name__)
-
+CORS(app)
 app.secret_key = 'super secret key'
 app.config['SESSION_TYPE'] = 'filesystem'
 # filterlist=[]
@@ -33,7 +34,6 @@ segment=[{'ps1':'0-10000 '},
 
 
 submitdata =[]
-
 
 @app.route('/', methods=['GET','POST'])
 def login():
@@ -71,6 +71,8 @@ def filtervalues():
     if request.method == "POST":
         print(request.get_json())
         brand = request.get_json()['brand']
+        # if brand not in df['brand']:
+
         # print(brand)
         priceSegment= request.get_json()['priceSegment']
         # print(priceSegment)
@@ -89,6 +91,24 @@ def filtervalues():
 # def product():
 #     return json.dumps(datafinal)
 
+@app.route('/filecheck', methods=['GET'])
+def filecheck():
+    if request.method=='GET':
+        if not fileavailable():
+            obj={
+                "message":"File not available",
+                "nature":"danger",
+                "prompt": True
+            }
+            return json.dumps(obj)
+        else:
+            obj={
+                "prompt": False
+            }
+            return json.dumps(obj)
+
+       
+
 @app.route('/sender', methods=['GET', 'POST'])
 def sender():
     
@@ -104,14 +124,17 @@ def sender():
 def submit(): 
     getjson=request.get_json()
     print(getjson)
+    # if getjson[0]['flag']==1:
     productchoose=getjson['product']
     pricedrop=getjson['priceDrop']
     remix=getjson['remix']
     prodQuant=getjson['prodQuant']
     print(prodQuant)
     randomlist=getmeasure(productchoose,prodQuant)
+    # random=getjson['randomlist']
     print(randomlist)
     reorderlist=getreorder(productchoose,prodQuant)
+    # reorder=getjson['reorderlist']
     print(reorderlist)
     submitdata.append({
         'ProdQuant':prodQuant,
@@ -120,8 +143,15 @@ def submit():
         'Remix_type' : remix
     })
     print(submitdata)
+    outputtable=[{
+           "randomlist":randomlist,
+        "reorderlist": reorderlist
+    }]
     flash('Submitted successfully','success')
-    return render_template('index.html',measure_list=randomlist,reorder_list=reorderlist)
+    return json.dumps(outputtable)
+        # return json.dumps({"response":[randomlist,reorderlist]}),200
+    # ,measure_list=randomlist,reorder_list=reorderlist
+    # return render_template('index.html')
 
 if __name__ == "__main__":
     app.run(debug=True)
