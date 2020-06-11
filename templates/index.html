@@ -23,6 +23,21 @@
 
   <!-- Template Main CSS File -->
   <link href="{{ url_for('static',filename='css/index.css' )}}" rel="stylesheet">
+  <script>
+    var showPrompt=(nature,message)=>{ 
+    let htmlerror='' 
+    htmlerror=
+    `<div class="alert alert-${nature} alert-dismissible fade show" role="alert">
+        <span>${message}</span>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+        </button>
+    </div>`
+    document.querySelector("#errordiv").insertAdjacentHTML("beforeend",htmlerror)
+    }
+    
+   
+</script>
 </head>
 <body>
 
@@ -31,8 +46,8 @@
     <div class="container d-flex align-items-center">
       <a href="{{ url_for('index')}}" class="logo mr-auto"><img src="{{url_for('static', filename='img/jio logo.png')}}" alt="" class="img-fluid"></a>
     </div>
-    <div>
-    {% with messages = get_flashed_messages(with_categories=true) %}
+    <div id="errordiv">
+    <!-- {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
             {% for category, message in messages %}
                 <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
@@ -43,7 +58,7 @@
                 </div>
             {% endfor %}
         {% endif %}
-    {% endwith %}
+    {% endwith %} -->
     </div>
   </header>
   <!-- End Header -->
@@ -56,18 +71,6 @@
     <section id="filter" class="filter">
         <div class="container" data-aos="fade-up" style="margin-top:50px">
                 <div class="row" style="margin-right: 12px;" >
-                    <!-- {% with messages = get_flashed_messages(with_categories=true) %}
-                        {% if messages %}
-                            {% for category, message in messages %}
-                                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
-                                    <span>{{ message }}</span>
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                            {% endfor %}
-                        {% endif %}
-                    {% endwith %} -->
                     <form action="{{url_for('filtervalues')}}" , method="POST" class="form-inline new" id='filtervalues'> 
                         <label for="price-segment" class="mr-md-2">Price Segment:</label>
                         <input type="text" name="price-segment" class="form-control mr-md-2" placeholder="Price segment" list="price-segment" >
@@ -94,6 +97,9 @@
                             event.preventDefault()
                             const brand = filterForm["brand"].value
                             const ps = filterForm["price-segment"].value
+                            if (!brand && !ps){
+                                showPrompt("warning","No options chosen for filter, Please do")
+                            }
                             console.log(brand, ps)
                             let options = {
                                 method : "POST",
@@ -114,20 +120,27 @@
                             })
                             .then(data=>{
                                 // data = JSON.parse(data)
+                                // console.log(data)
                                 console.log(typeof(data))
                                 let html4 = ""
+                                
                                 data.forEach(item=>{
                                     let itemString  = `<option value="${item}">${item}</option>`
                                     html4 += itemString
                                 })
-
-                                console.log(html4)
+                                if(data.length==0){
+                                    showPrompt("danger","No item found in the asked filter")
+                                    
+                                }
+                                // console.log(html4)
                                // document.querySelector("#productAdd").innerHTML = html
                                 //document.querySelector("#products").innerHTML = html
                                 document.querySelector("#products").innerHTML = html4
                                 document.querySelector("#productAdd").innerHTML = html4 
                                 filterForm.reset()
+                                showPrompt("success","Filetered Successfully")
                             })
+
 
                         })
                     
@@ -172,12 +185,6 @@
                             document.querySelector("#price-segment").innerHTML = html2
                     
                             //products default list population
-                            
-                            // data[0].brands.forEach(brandsfunc);
-
-                            // function brandsfunc(item) {
-                            // document.querySelector("#brand").innerHTML +='<option value="'+item+'">'+ item+ '</option>' 
-                            // }
                             
                             data[0].products.forEach(myFunction);
 
@@ -268,14 +275,8 @@
                                             <th>Quantity</th>
                                         </tr>
                                     </thead>
-                                    <tbody> 
-                                        
-                                        <!-- {% for i in product_list %}
-                                        <tr>
-                                            <td>{{i.prod}}</td>
-                                            <td>{{i.quant}}</td>
-                                        </tr>
-                                        {% endfor %} -->
+                                    <tbody>
+
                                     </tbody>
                                 </table>
                             </div>
@@ -310,6 +311,9 @@
                                                         e.preventDefault()
                                                         let product=addProduct["productAdd"].value
                                                         let quantity = addProduct["quantity"].value
+                                                        if (!product && !quantity){
+                                                            showPrompt("warning","No options chosen for Adding a new product, Please do")
+                                                        }
                                                         console.log("product:",product)
                                                         console.log("quantity:", quantity)
                                                         let html = 
@@ -323,6 +327,8 @@
                                                                 "prod": product,
                                                                 "quant": quantity
                                                         })
+                                                        showPrompt("success","Added New Product Successfully")
+
                                                         
                                                 })
                                                 let submitform = document.querySelector("#submitform") 
@@ -331,6 +337,10 @@
                                                         let product_choose= submitform["products"].value
                                                         let price_drop = submitform["price-drop"].value
                                                         let remix_type= submitform["remix-type"].value
+                                                        if (!product_choose && !price_drop && !remix_type){
+                                                            showPrompt("warning","No options chosen for Submit, Please choose all options")
+                                                        }
+
                                                         console.log("product:",product_choose)
                                                         console.log("priceDrop:", price_drop)
                                                         console.log("remix:", remix_type)
@@ -339,6 +349,7 @@
                                                                 "product": product_choose,
                                                                 "priceDrop": price_drop,
                                                                 "remix": remix_type
+                                                               
                                                         }
 
                                                         let options = {
@@ -350,20 +361,38 @@
                                                         }
                                                         fetch("/submit",options)
                                                         .then(resp=>{
-                                                                console.log(resp)
+                                                                // console.log(resp)
                                                                 return resp.json()
                                                         })
                                                         .then(res=>{
                                                                 console.log(res)
-                                                        })
-
-                                                        // let html = 
-                                                        // `<tr>
-                                                        //         <td>${}</td>
-                                                        //         <td>${quantity}</td>
-                                                        // </tr>`
-                                                        // document.querySelector("#product-table tbody").insertAdjacentHTML("beforeend",html)
                                                         
+
+                                                        htmlfinal=''
+                                                        res[0].reorderlist.forEach((element)=>{ 
+                                                            
+                                                            let html5=
+                                                                `<tr>
+                                                                    <td>${element.prod}</td>
+                                                                    <td>${element.quant}</td>
+                                                                    <td>${element.reorder}</td>
+                                                                </tr>`
+                                                            htmlfinal+=html5
+                                                        })
+                                                        document.querySelector("#reordertable tbody").insertAdjacentHTML("beforeend",htmlfinal)
+                                                        htmlfinalmeas=''
+                                                        res[0].randomlist.forEach((item)=>{
+                                                            let html6=
+                                                                `<tr>
+                                                                    <td>${item.prod}</td>
+                                                                    <td>${item.meas}</td>
+                                                                   
+                                                                </tr>`
+                                                            htmlfinalmeas+=html6
+                                                        })
+                                                        document.querySelector("#meastable tbody").insertAdjacentHTML("beforeend",htmlfinalmeas)
+                                                        showPrompt("success","Submitted Successfully")
+                                                    })       
                                                 })
                                         })                                               
                                 </script>
@@ -374,52 +403,40 @@
             </div>
         </div>
     </section>
-    
-     
-
 
   <!-- ======= Output Section ======= -->
   <section id="output" class="output" data-aos="fade-up">
       <div class="row1">
             <div class="column1 new">
                 <h5>Re-order Mix</h5>
-                <table>
-                    <tr>
-                    <th>Product</th>
-                    <th>Original Distribution</th>
-                    <th>Re-order Distribution</th>
-                    </tr>
-                    
-                    {% for i in product_list %}
+                <table id="reordertable">
+                    <thead>
                         <tr>
-                            <td>{{i.prod}}</td>
-                            <td>{{i.quant}}</td>
-                            <td></td>
-
+                        <th>Product</th>
+                        <th>Original Distribution</th>
+                        <th>Re-order Distribution</th>
                         </tr>
-                    {% endfor %}
-                    
+                    </thead>
+                    <tbody>
+
+                    </tbody>
                 </table>
             </div>
-          
 
             <div class="column1 new">
                 <h5>Measure</h5>
-                <table>
+                <table id="meastable">
+                    <thead>
                     <tr>
                     <th>Product</th>
                     <th>Weight</th>
                     </tr>
-                    {% for i in measure_list %}
-                        <tr>
-                               <td>{{i.prod}}</td>
-                               <td>{{i.meas}}</td>
-                        </tr>
-                    {% endfor %}
-                    
+                </thead>
+                <tbody>
+
+                </tbody>
                 </table>
             </div>
-         
             
             <div class="column1 new">
                 <h5>Stacked Bar Graph</h5>
