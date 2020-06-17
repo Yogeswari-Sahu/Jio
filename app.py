@@ -1,10 +1,9 @@
 from flask import Flask,render_template, url_for, request, redirect, jsonify, json,flash
-from flask_cors import CORS
+# from flask_cors import CORS
 import pandas as pd
 from datamodels import filterprod,prod,getmeasure,getreorder
 
 app= Flask(__name__)
-CORS(app)
 app.secret_key = 'super secret key'
 app.config['SESSION_TYPE'] = 'filesystem'
 # filterlist=[]
