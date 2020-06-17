@@ -46,8 +46,8 @@
     <div class="container d-flex align-items-center">
       <a href="{{ url_for('index')}}" class="logo mr-auto"><img src="{{url_for('static', filename='img/jio logo.png')}}" alt="" class="img-fluid"></a>
     </div>
-    <div id="errordiv">
-    <!-- {% with messages = get_flashed_messages(with_categories=true) %}
+    <!-- <div id="errordiv">
+    <{% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
             {% for category, message in messages %}
                 <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
@@ -58,8 +58,8 @@
                 </div>
             {% endfor %}
         {% endif %}
-    {% endwith %} -->
-    </div>
+    {% endwith %}
+    </div> -->
   </header>
   <!-- End Header -->
 
@@ -132,9 +132,7 @@
                                     showPrompt("danger","No item found in the asked filter")
                                     
                                 }
-                                // console.log(html4)
-                               // document.querySelector("#productAdd").innerHTML = html
-                                //document.querySelector("#products").innerHTML = html
+                               
                                 document.querySelector("#products").innerHTML = html4
                                 document.querySelector("#productAdd").innerHTML = html4 
                                 filterForm.reset()
