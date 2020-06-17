@@ -1,31 +1,10 @@
-# from flask import Flask,render_template, url_for, request, redirect, jsonify, json, flash,current_app
 import pandas as pd
 import random
 
 FILENAME='ProductData.csv'
 
-# with app.app_context():
-#     # within this block, current_app points to app.
-#     print current_app.name
-
-# df=()
-# def fileavailable():
-#     try:
-#         file = pd.read_csv(FILENAME)
-#         return True
-#             # if df:
-#             #     print('sucsess')
-#             # else:
-#                 # print('get one more')
-#     except:
-#         return False
-        
-
 df = pd.read_csv(FILENAME)
 
-# except Exception as e:
-#     print('heelllllooooo exc')
-#     flash('File not found','error')
 
 dfprod=[]
 reorder=[]
