@@ -291,12 +291,12 @@ section {
   }
 
   .filter .new input {
-    height: 30px;
-    padding-bottom: 20px;
+    height: 32px;
+    padding-bottom: 9px;
   }
 
   
-  .remix .new button[type="submit"] , .filter .row button[type="submit"] , .addproduct.add button[type="submit"] {
+  .remix .new button[type="submit"] , .filter .row button[type="submit"] , .addproduct.add button[type="submit"],.output button[type="submit"] {
     background: #47b2e4;
     border: 0;
     font-size:15px;
