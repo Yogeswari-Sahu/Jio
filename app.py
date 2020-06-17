@@ -14,7 +14,7 @@ prodQuant=[]
 brandlist=[{"Apple": "Apple"},
         {"One Plus" : "One Plus"},
         {"Xiami" :"Xiami"},
-        {"Iphone" : "Iphone"},
+        {"Nokia" :"Nokia"},
         {"Nexus":"Nexus"},
         {"Vivo": "Vivo"},
         {"Nokia": "Nokia"},
@@ -91,7 +91,7 @@ def submit():
     randomlist=getmeasure(productchoose,prodQuant)
     # random=getjson['randomlist']
     print(randomlist)
-    reorderlist=getreorder(productchoose,prodQuant)
+    reorderlist=getreorder(productchoose,prodQuant,randomlist)
     # reorder=getjson['reorderlist']
     print(reorderlist)
     submitdata.append({

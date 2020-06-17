@@ -60,8 +60,9 @@ def ps():
     print(col)
     return col
 
+randomlist = []
+
 def getmeasure(self_context,cross_context):
-    randomlist = []
     for i in range(len(cross_context)):
         n = round(random.uniform(0.5,1.5),2)
         p=cross_context[i]['prod']
@@ -71,12 +72,11 @@ def getmeasure(self_context,cross_context):
         })
     return randomlist
     
-def getreorder(self_context,cross_context):
-    randomlist = getmeasure(self_context,cross_context)
+def getreorder(self_context,cross_context,randomlist):
     reorder = []
     for i in range(len(randomlist)):
-        r=randomlist[i]['meas']
-        q=float(cross_context[i]['quant'])
+        r=float(randomlist[i]['meas'])      
+        q=float(cross_context[i]['quant'])      
         reo=round(q*r)
         p=cross_context[i]['prod']
         reorder.append({
