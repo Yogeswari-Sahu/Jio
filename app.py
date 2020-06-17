@@ -86,10 +86,10 @@ def submit():
     print(prodQuant)
     randomlist=getmeasure(productchoose,prodQuant)
     # random=getjson['randomlist']
-    print(randomlist)
+    # print(randomlist)
     reorderlist=getreorder(productchoose,prodQuant,randomlist)
     # reorder=getjson['reorderlist']
-    print(reorderlist)
+    # print(reorderlist)
     submitdata.append({
         'ProdQuant':prodQuant,
         'Product_Chosen': productchoose,
