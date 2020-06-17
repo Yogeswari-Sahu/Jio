@@ -117,10 +117,10 @@
                                     let itemString  = `<option value="${item}">${item}</option>`
                                     html4 += itemString
                                 })
-                                if(data.length==0){
-                                    showPrompt("danger","No item found in the asked filter")
+                                // if(data.length==0){
+                                //     showPrompt("danger","No item found in the asked filter")
                                     
-                                }
+                                // }
                                
                                 document.querySelector("#products").innerHTML = html4
                                 document.querySelector("#productAdd").innerHTML = html4 
@@ -207,7 +207,7 @@
                         
                             <div class="input-group-append">
                                 <label for="price-drop" style="padding:2px 4px 4px 0px;" >Price Drop:</label>
-                                <input type="number" name="price-drop" placeholder="Price drop in %" id="price-drop" required=>
+                                <input type="number step=0.01" min=-100 max=100 name="price-drop" placeholder="Price drop in %" id="price-drop" required=>
                                 <span class="input-group-text" style="height: 30px;">%</span>
                             </div>
                             
