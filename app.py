@@ -14,7 +14,6 @@ prodQuant=[]
 brandlist=[{"Apple": "Apple"},
         {"One Plus" : "One Plus"},
         {"Xiami" :"Xiami"},
-        {"Nokia" :"Nokia"},
         {"Nexus":"Nexus"},
         {"Vivo": "Vivo"},
         {"Nokia": "Nokia"},
@@ -38,10 +37,7 @@ submitdata =[]
 def login():
     error = None
     if request.method == 'POST':
-        # if request.form['email']!= 'ysahujan042526@gmail.com' or request.form['pass']!= 'mani':
-        #     error = 'Invalid username or password. Please try again!'
-        # else:
-            return redirect(url_for('index'))
+        return redirect(url_for('index'))
     return render_template('login.html', error = error ,title='Login')
     
 
@@ -102,7 +98,7 @@ def submit():
     })
     print(submitdata)
     outputtable=[{
-           "randomlist":randomlist,
+        "randomlist":randomlist,
         "reorderlist": reorderlist
     }]
     flash('Submitted successfully','success')
@@ -110,3 +106,5 @@ def submit():
  
 if __name__ == "__main__":
     app.run(debug=True)
+
+

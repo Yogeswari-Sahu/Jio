@@ -61,9 +61,11 @@ def ps():
     return col
 
 randomlist = []
+# mllist=[]
 
 def getmeasure(self_context,cross_context):
     for i in range(len(cross_context)):
+        # n=mllist[i]
         n = round(random.uniform(0.5,1.5),2)
         p=cross_context[i]['prod']
         randomlist.append({
